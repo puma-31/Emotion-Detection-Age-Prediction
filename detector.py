@@ -2,13 +2,15 @@ import cv2
 import numpy as np
 import tensorflow as tf
 
-MODEL_PATH = "best_model.keras"
+EMOTION_MODEL_PATH = "best_model.keras"
+AGE_MODEL_PATH = "C:\\Users\\mpura\\projects\\emotion_detection_and_age_prediction\\Emotion-Detection-Age-Prediction\\best_age_model.keras"
 EMOTION_LABELS = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
 IMG_SIZE = (48, 48)
 
 FACE_CASCADE = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-model = tf.keras.models.load_model(MODEL_PATH)
+emotion_model = tf.keras.models.load_model(EMOTION_MODEL_PATH)
+age_model = tf.keras.models.load_model(AGE_MODEL_PATH)
 
 def preprocess_face(face_bgr):
     gray = cv2.cvtColor(face_bgr, cv2.COLOR_BGR2GRAY)          
@@ -44,14 +46,17 @@ while True:
         face_crop = frame[y1:y2, x1:x2]
 
         input_tensor = preprocess_face(face_crop)
-        preds = model.predict(input_tensor, verbose=0)[0]
+        preds = emotion_model.predict(input_tensor, verbose=0)[0]
         emotion_idx = np.argmax(preds)
         emotion = EMOTION_LABELS[emotion_idx]
         confidence = preds[emotion_idx] * 100
 
+        age_pred = age_model.predict(input_tensor, verbose=0)[0][0]
+        age = int(age_pred)
+
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
-        label = f"{emotion}"# ({confidence:.1f}%)"
+        label = f"{emotion}, {age}"# ({confidence:.1f}%)"
         label_y = y1 - 10 if y1 - 10 > 10 else y2 + 20
         cv2.putText(frame, label, (x1, label_y),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
