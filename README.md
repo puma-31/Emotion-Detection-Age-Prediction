@@ -2,10 +2,11 @@
 
 Real-time facial emotion classification and age estimation from webcam or image input using TensorFlow/Keras and OpenCV.
 
-## Demo Placeholders
-- Add a short GIF: `assets/screenshots/demo.gif`
-- Add 2-4 screenshots: `assets/screenshots/demo1.png`, `assets/screenshots/demo2.png`
-- Optional sample output image: `assets/screenshots/test_image_annotated.jpg`
+## Demo 
+
+![Happy Demo](https://github.com/puma-31/Emotion-Detection-Age-Prediction/blob/main/demos/demo1_annotated.jpg)
+
+![Multiple faces Demo](https://github.com/puma-31/Emotion-Detection-Age-Prediction/blob/main/demos/demo2_annotated.jpg)
 
 ## Features
 - Real-time webcam inference with face detection overlays.
